@@ -21,25 +21,34 @@ public class Tester {
 		Object myOrigList = null;
 		Object prevList = null;
 		Object myPrevList = null;
-		int randTest;
+		int randTest = 0;
+		int numTests = 0;
+		System.out.println("Working...");
 		test1();
 		test2();
 		test3();
 		test4();
 		test5();
-		
-		for (int i = 0; i < 100; i++) {
+		test6();
+		numTests += 6;
+
+		for (int i = 0; i < 1000; i++) {
 			trace.clear();
 			populate();
-			System.out.println("   populate My list: " + myList);
-			System.out.println("populate Other list: " + list);
+			/*
+			 * System.out.println("   populate My list: " + myList);
+			 * System.out.println("populate Other list: " + list);
+			 */
 			for (int j = 1; j <= 39; j++) {
 				doMethod(j);
+				numTests++;
 			}
 			populate();
-			System.out.println("   populate My list: " + myList);
-			System.out.println("populate Other list: " + list);
-			for (int j = 0; j < 10; j++) {
+			/*
+			 * System.out.println("   populate My list: " + myList);
+			 * System.out.println("populate Other list: " + list);
+			 */
+			for (int j = 0; j < 1000; j++) {
 				randTest = rand.nextInt(38) + 1;
 				trace.push(randTest);
 				myPrevList = myOrigList;
@@ -48,20 +57,25 @@ public class Tester {
 				origList = list.clone();
 				try {
 					doMethod(randTest);
+					numTests++;
 				} catch (Exception e) {
-					System.out.println("Test sequence" + trace);
-					System.out.println("prev my list    " + (MyLinkedList<Integer>)myPrevList);
-					System.out.println("prev other list " + (LinkedList<Integer>)prevList);
-					System.out.println("original my list    " + (MyLinkedList<Integer>)myOrigList);
-					System.out.println("original other list " + (LinkedList<Integer>)origList);
-					System.out.println("   My list: " + myList);
-					System.out.println("Other list: " + list);
+					/*
+					 * System.out.println("Test sequence" + trace);
+					 * System.out.println("prev my list    " +
+					 * (MyLinkedList<Integer>)myPrevList); System.out.println(
+					 * "prev other list " + (LinkedList<Integer>)prevList);
+					 * System.out.println("original my list    " +
+					 * (MyLinkedList<Integer>)myOrigList); System.out.println(
+					 * "original other list " + (LinkedList<Integer>)origList);
+					 * System.out.println("   My list: " + myList);
+					 * System.out.println("Other list: " + list);
+					 */
 					throw e;
 				}
 			}
 		}
 
-		System.out.println("TESTS PASSED");
+		System.out.println("ALL " + numTests + " TESTS PASSED");
 	}
 
 	public static void assertTrue(boolean b) throws Exception {
@@ -138,8 +152,6 @@ public class Tester {
 		assertSame(strList, myStrList);
 		strList.addAll(0, all);
 		myStrList.addAll(0, all);
-		System.out.println("my " + myStrList);
-		System.out.println("th " + strList);
 		assertSame(strList, myStrList);
 	}
 
@@ -147,15 +159,29 @@ public class Tester {
 		LinkedList<Double> doubleList = new LinkedList<Double>();
 		MyLinkedList<Double> myDoubleList = new MyLinkedList<Double>();
 		ArrayList<Double> all = new ArrayList<Double>();
-		for (double i = 0.0; i < 10; i += 0.5) {
+		for (double i = 0.0; i < 1.5; i += 0.5) {
 			all.add(i);
 		}
 		doubleList.addAll(all);
 		myDoubleList.addAll(all);
 		assertSame(doubleList, myDoubleList);
-		
 	}
-	
+
+	public static void test6() throws Exception {
+		MyLinkedList<Integer> my = new MyLinkedList<Integer>();
+		LinkedList<Integer> their = new LinkedList<Integer>();
+		ArrayList<Integer> temp = new ArrayList<Integer>();
+		temp.add(11);
+		temp.add(12);
+		temp.add(13);
+		assertTrue(my.addAll(0, temp) == their.addAll(0, temp));
+		/*
+		 * System.out.println("my   " + my); System.out.println("their" +
+		 * their);
+		 */
+		assertSame(my, their);
+	}
+
 	public static void populate() throws Exception {
 		int size = rand.nextInt(10);
 		ArrayList<Integer> all = new ArrayList<Integer>();

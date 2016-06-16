@@ -18,12 +18,12 @@ public class MyLinkedList<E> extends AbstractSequentialList<E>
 	private Node<E> tail = null;
 	private int size = 0;
 
-	private class Node<E> {
-		public E data;
-		public Node<E> prev;
-		public Node<E> next;
+	private class Node<T> {
+		public T data;
+		public Node<T> prev;
+		public Node<T> next;
 
-		public Node(E data) {
+		public Node(T data) {
 			this.data = data;
 		}
 
@@ -47,9 +47,15 @@ public class MyLinkedList<E> extends AbstractSequentialList<E>
 
 	private void link(Node<E> first, Node<E> second) {
 		if (first != null) {
+			if (second == head) {
+				head = first;
+			}
 			first.next = second;
 		}
 		if (second != null) {
+			if (first == tail) {
+				tail = second;
+			}
 			second.prev = first;
 		}
 	}
@@ -83,17 +89,13 @@ public class MyLinkedList<E> extends AbstractSequentialList<E>
 				if (head == null) {
 					head = newNode;
 					tail = head;
+					next = null;
 				} else {
-					if (index == 0) {
-						link(newNode, head);
-						head = newNode;
-					} else if (curr == tail) {
+					if (next == null || next.prev == tail) {
 						link(tail, newNode);
-						tail = newNode;
+					} else if (next == head) {
+						link(newNode, head);
 					} else {
-						if (next == null) {
-							throw new IndexOutOfBoundsException();
-						}
 						insertNode(next.prev, newNode, next);
 					}
 					index++;
