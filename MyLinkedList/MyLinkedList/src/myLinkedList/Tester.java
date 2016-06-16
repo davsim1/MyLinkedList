@@ -1,4 +1,4 @@
-package list;
+package myLinkedList;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,11 +34,9 @@ public class Tester {
 	public static Random rand = new Random();
 
 	/**
-	 * Runs all of the tests and a randomized sequence of method calls on random
-	 * data sets added to the parallel myList and list.
-	 * 
-	 * @param args The command line input.
-	 * @throws Exception If a test results in an error.
+	 * Runs all of the tests and a randomized sequence of method calls on random data sets added to the parallel myList and list
+	 * @param args
+	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
 		// Setup variables
@@ -76,14 +74,13 @@ public class Tester {
 				numTests++;
 			}
 
-			// Reset the lists and run tests in a random order to cover the
-			// range of possibilities because order matters with these tests
+			// Reset the lists and run tests in a random order
 			populate();
 			/*
 			 * System.out.println("   populate My list: " + myList);
 			 * System.out.println("populate Other list: " + list);
 			 */
-			for (int j = 0; j < 750; j++) {
+			for (int j = 0; j < 500; j++) {
 				randTest = rand.nextInt(38) + 1;
 				trace.push(randTest);
 				myPrevList = myOrigList;
@@ -113,40 +110,12 @@ public class Tester {
 		System.out.println("ALL " + numTests + " TESTS PASSED");
 	}
 
-	/* Methods */
-	/**
-	 * Clear myList and list and add the same 10 random integers to each.
-	 * 
-	 * @throws Exception
-	 *             if a test fails.
-	 */
-	public static void populate() throws Exception {
-		int size = rand.nextInt(10);
-		ArrayList<Integer> all = new ArrayList<Integer>();
-
-		myList.clear();
-		list.clear();
-
-		for (int i = 0; i < size; i++) {
-			int num = rand.nextInt(10);
-			myList.add(num);
-			list.add(num);
-			all.add(rand.nextInt(10));
-		}
-
-		myList.addAll(all);
-		list.addAll(all);
-
-		assertTrue(myList.toString().equals(list.toString()));
-
-	}
-	
 	/**
 	 *
 	 * @param b
-	 *            boolean to test.
+	 *            boolean to test
 	 * @throws Exception
-	 *             if parameter is false.
+	 *              if parameter is false
 	 */
 	public static void assertTrue(boolean b) throws Exception {
 		if (!b) {
@@ -156,11 +125,12 @@ public class Tester {
 
 	/**
 	 * @param a
-	 *            Collection to test.
+	 *            Collection to test
 	 * @param b
-	 *            Collection to test.
+	 *            Collection to test
 	 * @throws Exception
-	 *             if parameters are different by toString or equals().
+	 *              if parameters are different by toString or
+	 *             equals()
 	 */
 	public static void assertSame(Collection<?> a, Collection<?> b) throws Exception {
 		assertTrue(a.toString().equals(b.toString()));
@@ -169,12 +139,11 @@ public class Tester {
 
 	}
 
-	/* Simple and corner case tests. */
 	/**
-	 * Simple test of adding 3 elements.
+	 * Simple test of adding 3 elements
 	 * 
 	 * @throws Exception
-	 *             if a test fails.
+	 *             if a test fails
 	 */
 	public static void test1() throws Exception {
 		myList.add(1);
@@ -189,10 +158,10 @@ public class Tester {
 	}
 
 	/**
-	 * Test backwards iteration over 1 element.
+	 * Test backwards iteration over 1 element
 	 * 
 	 * @throws Exception
-	 *             if a test fails.
+	 *             if a test fails
 	 */
 	public static void test2() throws Exception {
 		myList.add(1);
@@ -211,10 +180,10 @@ public class Tester {
 	}
 
 	/**
-	 * Test subsequent next() and previous() calls from listIterator().
+	 * Test subsequent next() and previous() calls from listIterator()
 	 * 
 	 * @throws Exception
-	 *             if a test fails.
+	 *             if a test fails
 	 */
 	public static void test3() throws Exception {
 		LinkedList<Character> charList = new LinkedList<Character>();
@@ -233,10 +202,10 @@ public class Tester {
 	}
 
 	/**
-	 * Test adding, removing, and adding all.
+	 * Test adding, removing, and adding all
 	 * 
 	 * @throws Exception
-	 *             if a test fails.
+	 *             if a test fails
 	 */
 	public static void test4() throws Exception {
 		LinkedList<String> strList = new LinkedList<String>();
@@ -259,10 +228,10 @@ public class Tester {
 	}
 
 	/**
-	 * Test addAll().
+	 * Test addAll()
 	 * 
 	 * @throws Exception
-	 *             if a test fails.
+	 *             if a test fails
 	 */
 	public static void test5() throws Exception {
 		LinkedList<Double> doubleList = new LinkedList<Double>();
@@ -277,10 +246,10 @@ public class Tester {
 	}
 
 	/**
-	 * Test addAll().
+	 * Test addAll()
 	 * 
 	 * @throws Exception
-	 *             if a test fails.
+	 *             if a test fails
 	 */
 	public static void test6() throws Exception {
 		MyLinkedList<Integer> my = new MyLinkedList<Integer>();
@@ -297,15 +266,41 @@ public class Tester {
 		assertSame(my, their);
 	}
 
-	/* Method for randomized testing. */
 	/**
-	 * Verify results from one method between the canonical
-	 * implementation of LinkedList and mine.
+	 * Clear myList and list and add the same 10 random integers to each
+	 * 
+	 * @throws Exception
+	 *             if a test fails
+	 */
+	public static void populate() throws Exception {
+		int size = rand.nextInt(10);
+		ArrayList<Integer> all = new ArrayList<Integer>();
+
+		myList.clear();
+		list.clear();
+
+		for (int i = 0; i < size; i++) {
+			int num = rand.nextInt(10);
+			myList.add(num);
+			list.add(num);
+			all.add(rand.nextInt(10));
+		}
+
+		myList.addAll(all);
+		list.addAll(all);
+
+		assertTrue(myList.toString().equals(list.toString()));
+
+	}
+
+	/**
+	 * Verify results from one method between the my and the canonical
+	 * implementations of LinkedList
 	 * 
 	 * @param num
-	 *            method number 1 - 39.
+	 *            method number 1 - 39
 	 * @throws Exception
-	 *             if a test fails.
+	 *             if a test fails
 	 */
 	public static void doMethod(int num) throws Exception {
 		Integer m = Integer.MIN_VALUE;
