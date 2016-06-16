@@ -17,23 +17,43 @@ public class Tester {
 	public static void main(String[] args) throws Exception {
 		rand.setSeed(System.currentTimeMillis());
 		LinkedList<Integer> trace = new LinkedList<Integer>();
+		Object origList = null;
+		Object myOrigList = null;
+		Object prevList = null;
+		Object myPrevList = null;
 		int randTest;
 		test1();
 		test2();
 		test3();
+		test4();
+		test5();
+		
 		for (int i = 0; i < 100; i++) {
+			trace.clear();
 			populate();
+			System.out.println("   populate My list: " + myList);
+			System.out.println("populate Other list: " + list);
 			for (int j = 1; j <= 39; j++) {
 				doMethod(j);
 			}
 			populate();
-			for (int j = 0; j < 1000; j++) {
+			System.out.println("   populate My list: " + myList);
+			System.out.println("populate Other list: " + list);
+			for (int j = 0; j < 10; j++) {
 				randTest = rand.nextInt(38) + 1;
 				trace.push(randTest);
+				myPrevList = myOrigList;
+				prevList = origList;
+				myOrigList = myList.clone();
+				origList = list.clone();
 				try {
 					doMethod(randTest);
 				} catch (Exception e) {
 					System.out.println("Test sequence" + trace);
+					System.out.println("prev my list    " + (MyLinkedList<Integer>)myPrevList);
+					System.out.println("prev other list " + (LinkedList<Integer>)prevList);
+					System.out.println("original my list    " + (MyLinkedList<Integer>)myOrigList);
+					System.out.println("original other list " + (LinkedList<Integer>)origList);
 					System.out.println("   My list: " + myList);
 					System.out.println("Other list: " + list);
 					throw e;
@@ -51,15 +71,10 @@ public class Tester {
 	}
 
 	public static void assertSame(Collection<?> a, Collection<?> b) throws Exception {
-		try {
-			assertTrue(a.toString().equals(b.toString()));
-			assertTrue(a.equals(b));
-			assertTrue(b.equals(a));
-		} catch (Exception e) {
-			System.out.println("   My list: " + myList);
-			System.out.println("Other list: " + list);
-			throw e;
-		}
+		assertTrue(a.toString().equals(b.toString()));
+		assertTrue(a.equals(b));
+		assertTrue(b.equals(a));
+
 	}
 
 	public static void test1() throws Exception {
@@ -106,6 +121,41 @@ public class Tester {
 		}
 	}
 
+	public static void test4() throws Exception {
+		LinkedList<String> strList = new LinkedList<String>();
+		MyLinkedList<String> myStrList = new MyLinkedList<String>();
+		ArrayList<String> all = new ArrayList<String>();
+		all.add("beta");
+		all.add("gamma");
+		all.add("delta");
+		strList.add("alpha");
+		myStrList.add("alpha");
+		strList.add("beta");
+		myStrList.add("beta");
+		assertSame(strList, myStrList);
+		strList.removeLast();
+		myStrList.removeLast();
+		assertSame(strList, myStrList);
+		strList.addAll(0, all);
+		myStrList.addAll(0, all);
+		System.out.println("my " + myStrList);
+		System.out.println("th " + strList);
+		assertSame(strList, myStrList);
+	}
+
+	public static void test5() throws Exception {
+		LinkedList<Double> doubleList = new LinkedList<Double>();
+		MyLinkedList<Double> myDoubleList = new MyLinkedList<Double>();
+		ArrayList<Double> all = new ArrayList<Double>();
+		for (double i = 0.0; i < 10; i += 0.5) {
+			all.add(i);
+		}
+		doubleList.addAll(all);
+		myDoubleList.addAll(all);
+		assertSame(doubleList, myDoubleList);
+		
+	}
+	
 	public static void populate() throws Exception {
 		int size = rand.nextInt(10);
 		ArrayList<Integer> all = new ArrayList<Integer>();
@@ -248,12 +298,13 @@ public class Tester {
 			break;
 		case 12:
 			idx = list.size() == 0 ? 0 : rand.nextInt(list.size());
-			temp.clear();
-			temp.add(15);
-			temp.add(16);
-			temp.add(17);
 			assertTrue(myList.addAll(idx, temp) == list.addAll(idx, temp));
-			assertSame(myList, list);
+			try {
+				assertSame(myList, list);
+			} catch (Exception e) {
+				assertSame(myList, list);
+				throw e;
+			}
 			try {
 				myList.addAll(myList.size() + 1, temp);
 				assertTrue(false);
